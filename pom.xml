@@ -12,6 +12,7 @@
         <module>userService</module>
         <module>hotelService</module>
         <module>ratingService</module>
+        <module>serviceRegistery</module>
     </modules>
 
     <properties>
