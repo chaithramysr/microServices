@@ -34,4 +34,8 @@ public class HotelService {
         hotelRepository.deleteById(hotelId);
         return "Hotel deleted successfully";
     }
+
+    public List<Hotel> getHotelDetailsByHotelIds(List<String> hotelIds) {
+        return hotelRepository.fetchByHotelIds(hotelIds);
+    }
 }

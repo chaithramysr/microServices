@@ -29,6 +29,11 @@ public class HotelController {
         return hotelService.getHotel(hotelId);
     }
 
+    @PostMapping("/getHotelDetailsByHotelIds")
+    public List<Hotel> getHotelDetailsByHotelIds(@RequestBody List<String> hotelIds){
+        return hotelService.getHotelDetailsByHotelIds(hotelIds);
+    }
+
     @PostMapping("/updateHotel")
     public String updateHotel(@RequestBody Hotel hotel){
         return hotelService.updateHotel(hotel);
