@@ -46,7 +46,7 @@ public class UserService {
         User userDetails = userRepository.findById(userId).get();
 
         //Fetching user rating details based on userId
-        String ratingUrl = "http://localhost:8083/ratings/getRatingByUserId/"+userId;
+        String ratingUrl = "http://RATING-SERVICE/ratings/getRatingByUserId/"+userId;
         ResponseEntity<String> exchange = restTemplate.exchange(ratingUrl, HttpMethod.GET, null, String.class);
         List<Rating> ratings = JsonIterator.deserialize(exchange.getBody(), new TypeLiteral<List<Rating>>() {});
 
@@ -56,7 +56,7 @@ public class UserService {
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("Content-Type", "application/json");
         HttpEntity<List<String>> httpEntity =new HttpEntity<>(hotelIdsList,httpHeaders);
-        String hotelUrl="http://localhost:8082/hotels/getHotelDetailsByHotelIds";
+        String hotelUrl="http://Hotel-SERVICE/hotels/getHotelDetailsByHotelIds";
         ResponseEntity<String> hotelExhange = restTemplate.exchange(hotelUrl, HttpMethod.POST, httpEntity, String.class);
         List<Hotel> hotelDetails= JsonIterator.deserialize(hotelExhange.getBody(), new TypeLiteral<List<Hotel>>() {});
         Map<String, Hotel> hotelIdAndHotelMap = hotelDetails.stream()
@@ -67,6 +67,10 @@ public class UserService {
         return userDetails;
     }
 
+//    public User getUserUsingFeign(String userId) {
+//
+//    }
+
     public String updateUser(User user) {
         userRepository.save(user);
         return "User updated successfully";
@@ -76,6 +80,8 @@ public class UserService {
         userRepository.deleteById(userId);
         return "User deleted successfully";
     }
+
+
 }
 
 

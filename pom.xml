@@ -9,10 +9,10 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
+        <module>serviceRegistery</module>
+        <module>ratingService</module>
         <module>userService</module>
         <module>hotelService</module>
-        <module>ratingService</module>
-        <module>serviceRegistery</module>
     </modules>
 
     <properties>
