@@ -13,6 +13,7 @@
         <module>ratingService</module>
         <module>userService</module>
         <module>hotelService</module>
+        <module>apiGateway</module>
     </modules>
 
     <properties>
