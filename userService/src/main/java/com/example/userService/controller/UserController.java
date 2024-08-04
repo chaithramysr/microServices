@@ -25,10 +25,10 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-//    @GetMapping("/getUser/{id}")
-//    public User getUser(@PathVariable("id") String userId){
-//        return userService.getUserUsingFeign(userId);
-//    }
+    @GetMapping("/getUser/{id}")
+    public User getUserDetsilsUsingFeign(@PathVariable("id") String userId){
+        return userService.getUserUsingFeign(userId);
+    }
 
     @GetMapping("/getUserById/{id}")
     public User getUser(@PathVariable("id") String userId){

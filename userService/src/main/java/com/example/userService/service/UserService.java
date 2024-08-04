@@ -3,6 +3,8 @@ package com.example.userService.service;
 import com.example.userService.entity.Hotel;
 import com.example.userService.entity.Rating;
 import com.example.userService.entity.User;
+import com.example.userService.externalServices.HotelService;
+import com.example.userService.externalServices.RatingService;
 import com.example.userService.repository.UserRepository;
 import com.jsoniter.JsonIterator;
 import com.jsoniter.spi.TypeLiteral;
@@ -14,12 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class UserService {
@@ -29,6 +28,12 @@ public class UserService {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private RatingService ratingService;
+
+    @Autowired
+    private HotelService hotelService;
 
 
     public String addUser(User user) {
@@ -41,7 +46,6 @@ public class UserService {
     }
 
     public User getUser(String userId) {
-
         //Fetching user details based on userId
         User userDetails = userRepository.findById(userId).get();
 
@@ -67,9 +71,21 @@ public class UserService {
         return userDetails;
     }
 
-//    public User getUserUsingFeign(String userId) {
-//
-//    }
+    public User getUserUsingFeign(String userId) {
+        //Fetching user details based on userId
+        User userDetails = userRepository.findById(userId).get();
+        //Fetching user rating details based on userId
+        List<Rating> ratings = ratingService.getRatingByUserId(userId);
+        //collect all hotel ids in rating details
+        List<String> hotelIdsList = ratings.stream().map(rating -> rating.getHotelId()).toList();
+        //Fetching Hotel details based on hotel ids
+        List<Hotel> hotelDetails = hotelService.getHotelDetailsByHotelIds(hotelIdsList);
+        Map<String, Hotel> hotelIdAndHotelMap = hotelDetails.stream()
+                .collect(Collectors.toMap(Hotel::getId, hotelData -> hotelData));
+        ratings.forEach(rating -> rating.setHotel(hotelIdAndHotelMap.get(rating.getHotelId())));
+        userDetails.setRatings(ratings);
+        return userDetails;
+    }
 
     public String updateUser(User user) {
         userRepository.save(user);
